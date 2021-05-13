@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+    <ion-button [routerLink]="['/']"   fill="clear">
+      <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="stacked">Email</ion-label>
+    <ion-input type="text" [(ngModel)]="id"></ion-input>
+  </ion-item><ion-item>
+    <ion-label position="stacked">Password</ion-label>
+    <ion-input type="password" [(ngModel)]="password"></ion-input>
+  </ion-item>
+  <ion-button (click)="onLogin()" expand="block"  shape="block" color="primary" >
+    Login
+  </ion-button>
+  <ion-button [routerLink]="['/register']"   expand="block"  shape="block"  color="secondary" >
+    Register
+  </ion-button>
+</ion-content>
