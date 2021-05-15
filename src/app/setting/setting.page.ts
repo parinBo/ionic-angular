@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth'
+import { NavController } from '@ionic/angular';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-setting',
@@ -8,12 +9,13 @@ import {AngularFireAuth} from '@angular/fire/auth'
 })
 export class SettingPage implements OnInit {
 
-  constructor(private anFire:AngularFireAuth) { }
+  constructor(private navCtrl:NavController,private user:UserService) { }
 
   ngOnInit() {
   }
   async onLogout(){
-    const res =await this.anFire.signOut()
+    await this.user.singout()
+    this.navCtrl.navigateForward(['/'])
   }
 
 }
