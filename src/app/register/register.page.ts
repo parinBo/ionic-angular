@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Router } from '@angular/router';
-import {AlertController, NavController} from '@ionic/angular'
+import { NavController} from '@ionic/angular'
 import { AlertService } from '../services/Alert.service';
+import { UserService } from '../services/user.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -12,7 +12,7 @@ export class RegisterPage implements OnInit {
   id:string=""
   password:string=""
   cpassword:string=""
-  constructor(public agFire:AngularFireAuth,private alertSer:AlertService,private navCtrl:NavController) { }
+  constructor(private alertSer:AlertService,private navCtrl:NavController,private user:UserService) { }
 
   ngOnInit() {
   }
@@ -25,7 +25,7 @@ export class RegisterPage implements OnInit {
       this.alertSer.msg("Fail!","Password doesn't match")
     }else{
       try{
-        const res = await this.agFire.createUserWithEmailAndPassword(id,password)
+        await this.user.singup(id,password)
         this.alertSer.msg("Success!","Go to login")
         this.navCtrl.navigateForward(['/login'])
       }catch(err){
