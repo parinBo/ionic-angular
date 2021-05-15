@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { Router } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { AlertService } from '../services/Alert.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +11,7 @@ import { AlertService } from '../services/Alert.service';
 export class LoginPage implements OnInit {
   id:string=""
   password:string=""
-  constructor(public agFire:AngularFireAuth,private navCtrl:NavController,private alSer:AlertService) { }
+  constructor(private navCtrl:NavController,private alSer:AlertService,private user:UserService) { }
 
   ngOnInit() {
   }
@@ -22,7 +21,7 @@ export class LoginPage implements OnInit {
   async onLogin(){
     const {id,password} = this
     try{
-      const res = await this.agFire.signInWithEmailAndPassword(id,password)
+      await this.user.signin(id,password)
       this.navCtrl.navigateForward(['/'])
     }catch(err){
       this.alSer.msg("Fail!",err.message)

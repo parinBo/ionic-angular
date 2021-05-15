@@ -1,9 +1,32 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>tasks</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main-menu"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Tasks</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  
+  <ion-list>
+    <ion-item *ngFor="let i of tasks">
+      <ion-icon name="book" slot="start"></ion-icon>
+      <ion-label>{{i.name}}</ion-label>
+      <ion-button id={{i.id}} (click)="onAdd($event,i)"  shape="round" color="success"  *ngIf="i.limit>0">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+      <ion-button id={{i.id}} (click)="onAdd($event,i)"  shape="round" color="success" [disabled]="true" *ngIf="i.limit==0">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
 </ion-content>
+<ion-list  style="position: absolute;bottom: 0;width: 100%;">
+  <ion-item [routerLink]="['/tasks/task-list']"  >
+    <ion-label>Check-list</ion-label>
+    <ion-button   shape="round">
+      Go
+    </ion-button>
+  </ion-item>
+</ion-list>
