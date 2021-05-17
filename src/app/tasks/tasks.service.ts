@@ -8,20 +8,21 @@ import { Task } from "./Tasks";
 export class TaskServices{
     Thetasks:Task[]=[
         {name:"ตักน้ำแข็ง (2ถุง)",id:"icebag-1",rate:10,limit:1},
-        {name:"ตักน้ำแข็ง (ต่อกระติก)",id:"icebox-3",rate:5,limit:3},
+        {name:"ตักน้ำแข็ง (3กระติก)",id:"icebox-1",rate:5,limit:1},
         {name:"กวาดบ้าน",id:"sweep-2",rate:5,limit:2},
-        {name:"อ่านหนังสือ/ทำแบบฝึกหัด",id:"int",rate:30,limit:1},
-        {name:"เตรียมโต๊ะกินข้าว",id:"prepare-2",rate:10,limit:2},
+        {name:"ถูบ้าน",id:"mopping-2",rate:5,limit:2},
+        {name:"ตากผ้า",id:"shirt-1",rate:10,limit:1},
+        {name:"อ่านหนังสือ/ทำแบบฝึกหัด",id:"int-1",rate:30,limit:1},
+        {name:"เตรียม/เก็บโต๊ะกินข้าว",id:"prepare-2",rate:10,limit:2},
         {name:"เช็ดโต๊ะกินข้าว",id:"cleantable-2",rate:5,limit:2},
-        {name:"ทิ้งขยะ (วัน)",id:"garbage-1",rate:30,limit:1},
-        {name:"ช่วยแม่ทำงาน (วัน)",id:"helpmom-1",rate:20,limit:1},
         {name:"ขายของ (วัน)",id:"sell-1",rate:15,limit:1},
-        {name:"ให้อาหารหมา",id:"feed-2",rate:10,limit:2},
-        {name:"ล้างจาน",id:"cleandish-2",rate:15,limit:2},
+        {name:"ให้อาหารหมา",id:"feed-2",rate:5,limit:2},
+        {name:"ล้างจาน",id:"cleandish-2",rate:10,limit:2},
+        {name:"แช่ของ",id:"fillshelf-2",rate:5,limit:2},
         {name:"ปิดบ้าน",id:"closehome-1",rate:5,limit:1},
-        {name:"แช่ของ",id:"fillshelf-2",rate:10,limit:2},
-        {name:"ทิ้งขยะ",id:"cleantable-2",rate:15,limit:2},
-      ]
+        {name:"ทิ้งขยะ ",id:"garbage-3",rate:10,limit:3},
+        {name:"ช่วยแม่ทำงาน (วัน)",id:"helpmom-1",rate:15,limit:1},
+    ]
     private uId:string
     private rate:number=0
     private rateSub = new Subject<Number>()
@@ -43,13 +44,11 @@ export class TaskServices{
         this.changeAllTask(task)
     }
     getAllTasks(){
-        let num:number =1
         this.auth.user.subscribe(i=>{
             this.uId=i.uid
             let dataCollection = this.afs.doc("Task/"+i.uid).collection<Task>("allData")
             dataCollection.snapshotChanges().subscribe(data=>{
                 if(data.length==0){
-                    console.log("have not data")
                     this.Thetasks.map(data=>{
                         dataCollection.doc(data.id).set(data)
                     })
@@ -61,7 +60,6 @@ export class TaskServices{
                     })).subscribe(res=>{
                         this.taskAllSub.next(res)
                     })
-                    console.log("havedata")
                 }
             })
         })
@@ -90,14 +88,14 @@ export class TaskServices{
         return this.rateSub
     }
     async deleteTask(task:Task){
-        await this.tasksCollections.doc(task.id).delete()
-        this.allTasksCollections.valueChanges().pipe(map(data=>{
+        await this.allTasksCollections.valueChanges().pipe(map(data=>{
             return data.find(d=>d.name==task.name)
         })).subscribe(data=>{
             data.limit++;
             this.changeAllTask(data)
 
         })
+        await this.tasksCollections.doc(task.id).delete()
     }
     
     changeAllTask(task:Task){
@@ -107,5 +105,6 @@ export class TaskServices{
         this.allTasksCollections.doc(oldId).delete()
         this.allTasksCollections.doc(task.id).set({name:task.name,id:task.id,limit:task.limit,rate:task.rate})
     }
+    
    
 }

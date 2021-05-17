@@ -18,7 +18,7 @@ export class TaskListPage implements OnInit {
   initialize(){
     this.taskser.getTask()
     this.taskser.getTaskUpdate().subscribe(ss=>{
-      this.tasks= ss
+      this.addIcon(ss)
     })
     this.taskser.getRateUpdate().subscribe(ss=>{
       this.rate = ss
@@ -28,6 +28,14 @@ export class TaskListPage implements OnInit {
   goBack(){
     this.navCtrl.back()
   }
+  addIcon(task){
+    task.forEach(element => {
+      let id = element.id.substr(0,element.id.indexOf("-"))
+      element.icon =  "/assets/icon/"+id+".svg";
+    });
+    this.tasks = task
+  }
+ 
 
   async onRemove(task){
     await this.taskser.deleteTask(task)

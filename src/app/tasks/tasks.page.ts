@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 import { AlertService } from '../services/Alert.service';
 import { Task } from './Tasks';
 import { TaskServices } from './tasks.service';
@@ -21,19 +19,25 @@ export class TasksPage implements OnInit {
   ngOnInit() {
     this.taskSer.getAllTasks()
     this.taskSer.getAllTaskUpdate().subscribe(data=>{
-      this.tasks = data
+      this.addIcon(data)
     })
   }
  
   onAdd(e,data:Task){
-    e.target.disabled = true
     if(data.limit==0){
       this.alert.msg("Fail!","Cannot add data")
     }else{
       this.taskSer.addTask(data)
       this.amount++
     }
-    
+  }
+
+  addIcon(task){
+    task.forEach(element => {
+      let id = element.id.substr(0,element.id.indexOf("-"))
+      element.icon =  "/assets/icon/"+id+".svg";
+    });
+    this.tasks = task
   }
  
 }

@@ -22,6 +22,7 @@ export class LoginPage implements OnInit {
     const {id,password} = this
     try{
       await this.user.signin(id,password)
+      this.user.setId()
       this.navCtrl.navigateForward(['/'])
     }catch(err){
       this.alSer.msg("Fail!",err.message)

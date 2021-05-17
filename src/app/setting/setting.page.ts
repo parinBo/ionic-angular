@@ -8,7 +8,7 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./setting.page.scss'],
 })
 export class SettingPage implements OnInit {
-
+  name:string=""
   constructor(private navCtrl:NavController,private user:UserService) { }
 
   ngOnInit() {

@@ -7,26 +7,27 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
+<ion-content full-screen >
+  <ion-list >
     <ion-item *ngFor="let i of tasks">
-      <ion-icon name="book" slot="start"></ion-icon>
+      <ion-icon src={{i.icon}}  slot="start"></ion-icon>
       <ion-label>{{i.name}}</ion-label>
       <ion-button id={{i.id}} (click)="onAdd($event,i)"  shape="round" color="success"  *ngIf="i.limit>0">
-        <ion-icon name="add"></ion-icon>
+        <ion-label>{{i.limit}}</ion-label>
       </ion-button>
-      <ion-button id={{i.id}} (click)="onAdd($event,i)"  shape="round" color="success" [disabled]="true" *ngIf="i.limit==0">
-        <ion-icon name="add"></ion-icon>
+      <ion-button id={{i.id}} (click)="onAdd($event,i)"  shape="round" color="danger"  [disabled]="true" *ngIf="i.limit==0">
+        <ion-label>{{i.limit}}</ion-label>
       </ion-button>
     </ion-item>
   </ion-list>
-
+  <ion-list  style="position: absolute;bottom: 0;width: 100%;">
+   
+  </ion-list>
 </ion-content>
-<ion-list  style="position: absolute;bottom: 0;width: 100%;">
-  <ion-item [routerLink]="['/tasks/task-list']"  >
-    <ion-label>Check-list</ion-label>
-    <ion-button   shape="round">
-      Go
-    </ion-button>
-  </ion-item>
-</ion-list>
+<ion-footer>
+  <ion-toolbar>
+    <ion-item>
+      <ion-button [routerLink]="['/tasks/task-list']" size="default" class="btn-ionic" shape="round">Check out</ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>
